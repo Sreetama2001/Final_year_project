@@ -44,7 +44,7 @@ class Wavelet():
         energyProfile = np.abs(coef)
         
         max_index = np.argmax(energyProfile[firstScaleIndex:lastScaleIndex,:], axis=0)
-        instantPulseRate = 60 * freqs[firstScaleIndex + max_index]
+        instantPulseRate = 60 * freqs[firstScaleIndex + max_index] 
      
         return coef, instantPulseRate
     

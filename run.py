@@ -8,7 +8,7 @@ import multiprocessing as mp
 from optparse import OptionParser
 
 class RunPOS():
-    def __init__(self,  sz=270, fs=28, bs=30, plot=False):
+    def __init__(self,  sz=270, fs=28, bs=30, plot=True):
         self.batch_size = bs 
         self.frame_rate = fs
         self.signal_size = sz

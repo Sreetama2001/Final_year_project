@@ -11,7 +11,7 @@ import sys
 
 class CaptureFrames():
 
-    def __init__(self, bs, source, show_mask=False):
+    def __init__(self, bs, source, show_mask=True):
         self.frame_counter = 0
         self.batch_size = bs
         self.stop = False

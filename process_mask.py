@@ -38,7 +38,7 @@ class ProcessMasks():
         extract_signal_thread.start()
 
         self.rec_frames()
-        
+
         compute_mean_thread.join()
         extract_signal_thread.join()
   

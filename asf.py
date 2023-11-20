@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Implements
-Amplitude Selective Filtering preprocessing step for POS.
+Amplitude Selective Filtering (preprocessing)
 
 """
 
@@ -12,8 +12,9 @@ from numpy.linalg import inv
 # mat = scipy.io.loadmat('c.mat')
 
 def ASF(C):
+    # avoids divide by zero
     alpha=.002;delta=0.0001            
-    C_=np.dot(inv(np.diag(np.mean(C,1))),C)-1   
+    C_=np.dot(inv(np.diag(np.mean(C,1))),C)-1    
     L = C.shape[1]
     F=np.fft.fft(C_)/L        
     W=delta/(1e-12+np.abs(F[0,:]))

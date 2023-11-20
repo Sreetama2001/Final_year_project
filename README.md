@@ -1,4 +1,4 @@
-# Robust Heart rate estimation from facial videos
+# Health Vitals from facial recognition
 
 This repo monitors real time cardiac activities of a person through remote photoplethysmography(rPPG) without any physical contact with sensor, by detecing blood volume pulse induced subtle color changes from video stream through webcam sensor or a video file.
 
@@ -17,10 +17,6 @@ We apply signal processing techniques, moving average filter of order 6 to remov
 This code runs on cuda enabled device at 30 FPS and estimates heartbeat in one second intervel.
 
 
-## Pipeline
-
-![](images/pipeline.png)
-
 ## Requirements
 
 * Python 3
@@ -32,10 +28,6 @@ This code runs on cuda enabled device at 30 FPS and estimates heartbeat in one s
 
 * We have used deep learning for semantic segmentation of skin and non skin pixels from frames. The segmentation requires cuda enabled device
 
-
-Clone this repository.
-
-        git clone https://github.com/nasir6/rPPG.git
 
 To run
 

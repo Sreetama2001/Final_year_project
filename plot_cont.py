@@ -14,8 +14,8 @@ class DynamicPlot():
         self.launched = False
 
     def launch_fig(self):
-        self.fig, (self.pulse_ax, self.hr_axis)= plt.subplots(2, 1)
-        
+        self.fig, (self.pulse_ax, self.hr_axis)= plt.subplots(2, 1)  
+        #  2x1 grid layout
         self.pulse_to_plot = np.zeros(self.signal_size)
         self.hrs_to_plot = np.zeros(self.signal_size)
 

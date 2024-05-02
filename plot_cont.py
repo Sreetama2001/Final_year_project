@@ -1,5 +1,6 @@
 
 import numpy as np
+from hrv import *
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -14,12 +15,12 @@ class DynamicPlot():
         self.launched = False
 
     def launch_fig(self):
-        self.fig, (self.pulse_ax, self.hr_axis)= plt.subplots(2, 1)  
-        #  2x1 grid layout
+        self.fig, (self.pulse_ax, self.hr_axis)= plt.subplots(2, 1)
+        
         self.pulse_to_plot = np.zeros(self.signal_size)
         self.hrs_to_plot = np.zeros(self.signal_size)
 
-        self.hr_texts = self.pulse_ax.text(0.1, 0.9,'0', ha='center', va='center', transform=self.pulse_ax.transAxes)
+        self.hr_texts = self.pulse_ax.text(0.5, 0.9,'0', ha='center', va='center', transform=self.pulse_ax.transAxes, fontsize= 16, fontweight='bold', color='blue')
         self.pulse_ax.set_title('Blood Volume')
         self.hr_axis.set_title('Heart Rate')
         self.pulse_ax.set_autoscaley_on(True)
@@ -66,9 +67,19 @@ class DynamicPlot():
             self.re_draw()
 
     def update_data(self, p, hrs):
+        bvp_data = np.load('pulse.npy')  # BVP measurements
+        time_data = np.load('hrs.npy')  # Time measurements
+        hrv_calculator = HRVCalculator(bvp_data, time_data)
+        rmssd = hrv_calculator.calculate_rmssd()
+        # print("RMSSD (Root Mean Square of the Successive Differences):", rmssd)
+        
+        # Determine stress
+        stress_level = hrv_calculator.determine_stress()
+        # print("Stress Level:", stress_level)
 
         hr_fft = moving_avg(hrs, 3)[-1] if len(hrs) > 5 else hrs[-1]
-        hr_text = 'HR: ' + str(int(hr_fft))
+        hr_text = 'HR: ' + str(int(hr_fft)) + ',   Stress:' + stress_level  + ',   HRV: '+str(int(rmssd))
+        # hr_text = 'HR: ' + str(int(hr_fft))
         self.hr_texts.set_text(hr_text)
 
         # ma = moving_avg(p[-self.batch_size:], 6)

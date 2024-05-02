@@ -1,4 +1,7 @@
 # bvp -> hrv
+
+# The output of the function is blood volume pulse (BVP), which is the measurement of when your heart pumps blood. The data array titled pulse.npy contains the BVP measurements. time.npy contains the time measurements in UTF seconds. Join those two dataframes, and you can find the peaks of the BVP wave, then calculate the time between peaks to get R-R values. Once you have the time difference between successive beats (peaks), you can the Root Mean Square of the Successive Differences (RMSSD) to determine HRV.
+
 import numpy as np
 from cdf import CDF
 from asf import ASF

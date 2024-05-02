@@ -28,7 +28,7 @@ class RunPOS():
         
         process_mask = ProcessMasks(self.signal_size, self.frame_rate, self.batch_size)
 
-        mask_processer = mp.Process(target=process_mask, args=(chil_process_pipe, self.plot_pipe, source, ), daemon=True)  # multiprocessing
+        mask_processer = mp.Process( target=process_mask, args=(chil_process_pipe, self.plot_pipe, source, ), daemon=True)  # multiprocessing
 
         mask_processer.start()
         

@@ -35,7 +35,7 @@ class CaptureFrames():
         ])
     
         camera = cv2.VideoCapture(source)
-        time.sleep(1)
+        time.sleep(2)
         self.model.eval()
         (grabbed, frame) = camera.read()
 
@@ -85,12 +85,15 @@ class CaptureFrames():
 
 
             self.frames_count+=1
+            if time.time()- time_1 > 15:
+                self.terminate(camera)
 
         self.terminate(camera)
 
     
     def terminate(self, camera):
         self.pipe.send(None)
+        print("Terminating .....")
         cv2.destroyAllWindows()
         camera.release()
         

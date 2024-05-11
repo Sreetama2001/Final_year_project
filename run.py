@@ -1,4 +1,5 @@
 import time
+import personDetails as pd
 from plot_cont import DynamicPlot
 from capture_frames import CaptureFrames
 from process_mask import ProcessMasks
@@ -8,13 +9,14 @@ import multiprocessing as mp
 from optparse import OptionParser
 
 class RunPOS():
-    def __init__(self,  sz=270, fs=28, bs=30, plot=True):
+    def __init__(self,  sz=270, fs=28, bs=30, plot=False):
         self.batch_size = bs 
         self.frame_rate = fs
         self.signal_size = sz
         self.plot = plot
 
     def __call__(self, source):
+        pd.get_person_details()
         time1=time.time()
 
         mask_process_pipe, chil_process_pipe = mp.Pipe() # multiprocessing 
@@ -40,7 +42,7 @@ class RunPOS():
         if self.plot:
             self.plot_process.join()
         time2=time.time()
-        time2=time.time()
+
         print(f'time {time2-time1}')
 
 def get_args():

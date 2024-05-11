@@ -6,13 +6,21 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from utils import *
 from scipy.signal import medfilt, decimate
+import csv
 
 plt.ion()
+bvp_data = np.load('pulse.npy')  # BVP measurements
+time_data = np.load('hrs.npy')  # Time measurements
+hrv_calculator = HRVCalculator(bvp_data, time_data)
+rmssd = hrv_calculator.calculate_rmssd()
+stress_level = hrv_calculator.determine_stress()
+
 class DynamicPlot():    
     def __init__(self, signal_size, bs):
         self.batch_size = bs
         self.signal_size = signal_size
         self.launched = False
+        
 
     def launch_fig(self):
         self.fig, (self.pulse_ax, self.hr_axis)= plt.subplots(2, 1)
@@ -67,18 +75,9 @@ class DynamicPlot():
             self.re_draw()
 
     def update_data(self, p, hrs):
-        bvp_data = np.load('pulse.npy')  # BVP measurements
-        time_data = np.load('hrs.npy')  # Time measurements
-        hrv_calculator = HRVCalculator(bvp_data, time_data)
-        rmssd = hrv_calculator.calculate_rmssd()
-        # print("RMSSD (Root Mean Square of the Successive Differences):", rmssd)
-        
-        # Determine stress
-        stress_level = hrv_calculator.determine_stress()
-        # print("Stress Level:", stress_level)
-
-        hr_fft = moving_avg(hrs, 3)[-1] if len(hrs) > 5 else hrs[-1]
-        hr_text = 'HR: ' + str(int(hr_fft)) + ',   Stress:' + stress_level  + ',   HRV: '+str(int(rmssd))
+        self.hr_fft = moving_avg(hrs, 3)[-1] if len(hrs) > 5 else hrs[-1]
+        # + ',   HRV: '+str(rmssd)
+        hr_text = 'HR: ' + str(int(self.hr_fft)) + ',   Stress: ' + stress_level + ',   HRV :' + str(rmssd) 
         # hr_text = 'HR: ' + str(int(hr_fft))
         self.hr_texts.set_text(hr_text)
 
@@ -92,7 +91,7 @@ class DynamicPlot():
             self.pulse_to_plot[-1] = scaled[i]
             self.update_plot(self.pulse_ax, self.pulse_to_plot)
             self.hrs_to_plot[0:self.signal_size-1] = self.hrs_to_plot[1:]
-            self.hrs_to_plot[-1] = hr_fft
+            self.hrs_to_plot[-1] = self.hr_fft
             self.update_plot(self.hr_axis, self.hrs_to_plot)
             self.re_draw()
 
@@ -112,7 +111,41 @@ class DynamicPlot():
         saves numpy array of rPPG signal as pulse
         """
         np.save('pulse', self.pulse_to_plot)
+        
+        # with open('vitalsReport.csv', mode='a+') as file:
+        #     col_list=['Heart_rate','Blood_volume','Stress','HRV']
+        #     writer = csv.DictWriter(file,fieldnames=col_list)
+        #     writer.writerow({'Stress':stress_level , 'HRV' :rmssd , 'Heart_rate': self.hr_fft})
+        with open('vitalsReport.csv', mode='r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+
+    # Modify the last row to append new data
+        last_row = data[-1]
+        last_row.append(str(self.hr_fft))
+        # last_row.append(blood_volume)
+        if len(data)==1:
+            print("Stress and HRV will be appended after you test the next person")
+        else :
+            second_row =data[-2]
+            second_row.append(stress_level)
+            second_row.append(str(rmssd))
+
+    # Rewrite the modified data to the file
+        with open('vitalsReport.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+
         plt.close('all')
+
+    # def terminate1(self, event):
+    #     if event.key() == ' ':
+    #         self.terminate()
+
+
+
+
         
 
 

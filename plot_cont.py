@@ -84,8 +84,8 @@ class DynamicPlot():
         # ma = moving_avg(p[-self.batch_size:], 6)
         batch = p[-self.batch_size:]
         decimated_p = decimate(batch, 3)
-        # filterd_p =  medfilt(decimated_p, 5)
         scaled = scale_pulse(decimated_p)
+        # self.blood_vol = np.max(scaled)
         for i in range(0, len(scaled)):
             self.pulse_to_plot[0:self.signal_size-1] = self.pulse_to_plot[1:]
             self.pulse_to_plot[-1] = scaled[i]
@@ -123,7 +123,8 @@ class DynamicPlot():
     # Modify the last row to append new data
         last_row = data[-1]
         last_row.append(str(self.hr_fft))
-        # last_row.append(blood_volume)
+        last_row.append(str(self.pulse_to_plot[-1] *100))
+        
         if len(data)==1:
             print("Stress and HRV will be appended after you test the next person")
         else :

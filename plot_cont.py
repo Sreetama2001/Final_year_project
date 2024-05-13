@@ -76,8 +76,8 @@ class DynamicPlot():
 
     def update_data(self, p, hrs):
         self.hr_fft = moving_avg(hrs, 3)[-1] if len(hrs) > 5 else hrs[-1]
-        # + ',   HRV: '+str(rmssd)
-        hr_text = 'HR: ' + str(int(self.hr_fft)) + ',   Stress: ' + stress_level + ',   HRV :' + str(rmssd) 
+        hr_text = 'HR: ' + str(int(self.hr_fft))  
+        # + ',   Stress: ' + stress_level + ',   HRV :' + str(rmssd)
         # hr_text = 'HR: ' + str(int(hr_fft))
         self.hr_texts.set_text(hr_text)
 

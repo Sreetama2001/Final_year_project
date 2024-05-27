@@ -89,9 +89,11 @@ if __name__ == "__main__":
     hrv_calculator = HRVCalculator(bvp_data, time_data)
     rmssd = hrv_calculator.calculate_rmssd()
     stress_level = hrv_calculator.determine_stress()
-    print(name, gender, age, email, hr, bloodvolume, stress_level, rmssd)
+    # terminal
+    print(name, gender, age, email, hr, bloodvolume, stress_level, rmssd) 
+    # report generation 
     html = generate_html_report(name, gender, age, email, hr, bloodvolume, stress_level,rmssd)
-    output_file = "reports_generated\patient_report"
+    output_file = "patient_report"
     generate_pdf(html, output_file)
     print(f"Patient report saved as {output_file}")
 

@@ -32,7 +32,7 @@ class HRVCalculator:
 
     def determine_stress(self):
         rmssd = self.calculate_rmssd()
-        stress_threshold = 20  # Example threshold, adjust as needed (0.05)
+        stress_threshold = 35  # Example threshold, adjust as needed (0.035)
         if rmssd < stress_threshold:
             return "Stressed"
         else:
